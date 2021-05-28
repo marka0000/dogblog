@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+  # PHP Service
+  php:
+    build:
+      context: .
+      dockerfile: _docker/Dockerfile
+    container_name: dogblog_php-apache
+    environment:
+      - APACHE_RUN_USER=#1000
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 8080:80
+    links:
+      - db
+    working_dir: /var/www/html
+
+  # MySQL Service
+  db:
+    image: mysql:8.0
+    restart: always
+    container_name: dogblog_mysql
+    volumes:
+      - ./tmp/mysql:/var/lib/mysql
+    ports:
+      - 33061:3306
+    # задаем пароль для root пользователя
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  # Composer Service
+  composer:
+    image: composer:2.0
+    container_name: dogblog_composer
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    command: composer install
