@@ -20,11 +20,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('posts', [PostController::class, 'posts']);
-Route::get('post/{id}', [PostController::class, 'postById']);
+Route::get('posts', [PostController::class, 'index']);
 
-Route::post('post', [PostController::class, 'postSave']);
+Route::get('posts/{post}', [PostController::class, 'show']);
 
-Route::put('post/{id}', [PostController::class, 'postEdit']);
+Route::post('posts', [PostController::class, 'store']);
 
-Route::delete('post/{id}', [PostController::class, 'postDelete']);
+Route::put('posts/{post}', [PostController::class, 'update']);
+
+Route::delete('posts/{post}', [PostController::class, 'destroy']);

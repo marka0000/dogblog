@@ -9,48 +9,77 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    public function posts()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
         return response()->json(Post::all(), 200);
     }
 
-    public function postById($id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
     {
-        $post = Post::all()->find($id);
+        $data = Post::all()->find($post);
 //        $post = DB::table('posts')
 //            ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
 //            ->where('posts.id', '=', $id)
 //            ->get();
-        if (is_null($post)) {
+        if (is_null($data)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
-        return response()->json($post, 200);
+        return response()->json($data, 200);
     }
 
-    public function postSave(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        $post = Post::created($request->all());
-        return response()->json($post, 201);
+        $data = Post::create($request->all());
+        return response()->json($data, 201);
     }
 
-    public function postEdit(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Post $post)
     {
-        $post = Post::all()->find($id);
-        if (is_null($post)) {
+        $data = Post::all()->find($post);
+        if (is_null($data)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
-        $post->update($request->all());
-        return response()->json($post, 200);
-
+        $data->update($request->all());
+        return response()->json($data, 200);
     }
 
-    public function postDelete($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Post $post)
     {
-        $post = Post::all()->find($id);
-        if (is_null($post)) {
+        $data = Post::all()->find($post);
+        if (is_null($data)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
-        $post->delete();
+        $data->delete();
         return response()->json('', 204);
     }
 }
