@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Blog;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
@@ -25,9 +25,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        $data = Post::all()->find($post);
+        $data = Post::all()->find($id);
 //        $post = DB::table('posts')
 //            ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
 //            ->where('posts.id', '=', $id)
@@ -57,9 +57,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        $data = Post::all()->find($post);
+        $data = Post::all()->find($id);
         if (is_null($data)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
@@ -73,9 +73,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        $data = Post::all()->find($post);
+        $data = Post::all()->find($id);
         if (is_null($data)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }

@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Blog\PostController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,16 +17,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+Route::post('login', [RegisterController::class, 'login'])->name('login');
+Route::post('register', [RegisterController::class, 'register'])->name('register');
+//Route::group(['middleware' => 'auth:api'], function() {
+//    Route::get('posts', [PostController::class, 'index']);
+//    Route::get('posts/{post}', [PostController::class, 'show']);
+//    Route::post('posts', [PostController::class, 'store']);
+//    Route::put('posts/{post}', [PostController::class, 'update']);
+//    Route::delete('posts/{post}', [PostController::class, 'destroy']);
+//});
+
+Route::middleware('auth:api')->group(function () {
+    Route::resource('posts', PostController::class);
 });
 
-Route::get('posts', [PostController::class, 'index']);
+//Route::middleware('auth:api')->get('posts', [PostController::class, 'index']);
+//Route::middleware('auth:api')->get('posts/{post}', [PostController::class, 'show']);
+//Route::middleware('auth:api')->post('posts', [PostController::class, 'store']);
+//Route::middleware('auth:api')->put('posts/{post}', [PostController::class, 'update']);
+//Route::middleware('auth:api')->delete('posts/{post}', [PostController::class, 'destroy']);
 
-Route::get('posts/{post}', [PostController::class, 'show']);
-
-Route::post('posts', [PostController::class, 'store']);
-
-Route::put('posts/{post}', [PostController::class, 'update']);
-
-Route::delete('posts/{post}', [PostController::class, 'destroy']);
+//Route::get('posts', [PostController::class, 'index']);
+//Route::get('posts/{post}', [PostController::class, 'show']);
+//Route::post('posts', [PostController::class, 'store']);
+//Route::put('posts/{post}', [PostController::class, 'update']);
+//Route::delete('posts/{post}', [PostController::class, 'destroy']);
