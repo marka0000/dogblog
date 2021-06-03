@@ -16,6 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
+//        dd(response()->json(Post::all(), 200));
         return response()->json(Post::all(), 200);
     }
 
