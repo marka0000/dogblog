@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        return response()->json(Post::all(), 200);
+        $author = Post::with('author')->get();
+        $comment = Post::with('comment')->get();
+
+        $collection = collect($author);
+        $merged     = $collection->merge($comment);
+        $data[]   = $merged->all();
+
+        return response()->json($data, 200);
     }
 
     /**
@@ -27,11 +35,13 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $data = Post::all()->find($id);
-//        $post = DB::table('posts')
-//            ->leftJoin('comments', 'posts.id', '=', 'comments.post_id')
-//            ->where('posts.id', '=', $id)
-//            ->get();
+        $author = Post::with('author')->find($id);
+        $comment = Post::with('comment')->find($id);
+
+        $collection = collect($author);
+        $merged     = $collection->merge($comment);
+        $data[]   = $merged->all();
+
         if (is_null($data)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }

@@ -20,4 +20,14 @@ class Post extends Model
         'content',
         'user_id',
     ];
+
+    public function author()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function comment()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
 }
