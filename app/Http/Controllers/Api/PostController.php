@@ -22,9 +22,9 @@ class PostController extends Controller
 
         $collection = collect($author);
         $merged     = $collection->merge($comment);
-        $data[]   = $merged->all();
+        $post[]   = $merged->all();
 
-        return response()->json($data, 200);
+        return response()->json($post, 200);
     }
 
     /**
@@ -40,12 +40,12 @@ class PostController extends Controller
 
         $collection = collect($author);
         $merged     = $collection->merge($comment);
-        $data[]   = $merged->all();
+        $post[]   = $merged->all();
 
-        if (is_null($data)) {
+        if (is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
-        return response()->json($data, 200);
+        return response()->json($post, 200);
     }
 
     /**
@@ -56,8 +56,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Post::create($request->all());
-        return response()->json($data, 201);
+        $post = Post::create($request->all());
+        return response()->json($post, 201);
     }
 
     /**
@@ -69,12 +69,12 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Post::all()->find($id);
-        if (is_null($data)) {
+        $post = Post::all()->find($id);
+        if (is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
-        $data->update($request->all());
-        return response()->json($data, 200);
+        $post->update($request->all());
+        return response()->json($post, 200);
     }
 
     /**
@@ -85,11 +85,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $data = Post::all()->find($id);
-        if (is_null($data)) {
+        $post = Post::all()->find($id);
+        if (is_null($post)) {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
         }
-        $data->delete();
+        $post->delete();
         return response()->json('', 204);
     }
 }
