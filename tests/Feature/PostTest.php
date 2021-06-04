@@ -16,7 +16,7 @@ class PostTest extends TestCase
 
     public function testPostShowSuccess()
     {
-        $this->get('api/posts/')
+        $this->get('api/posts/' . $this->getIntSuccess())
             ->assertStatus(200);
     }
 
@@ -32,7 +32,7 @@ class PostTest extends TestCase
             'title' => 'Dog post blog',
             'sub_title' => 'Post about very small dog',
             'content' => 'The little dog loves to play ball',
-            'user_id' => 1,
+            'user_id' => $this->getIntSuccess(),
         ];
         $this->post('api/posts', $data)
             ->assertStatus(201);
@@ -46,7 +46,7 @@ class PostTest extends TestCase
             'content' => 'Title updated after test',
             'user_id' => $this->getIntSuccess(),
         ];
-        $this->put('api/posts/10', $data)
+        $this->put('api/posts/4', $data)
             ->assertStatus(200);
     }
 
@@ -56,7 +56,7 @@ class PostTest extends TestCase
             'title' => 'Title updated after test',
             'sub_title' => 'Title updated after test',
             'content' => 'Title updated after test',
-            'user_id' => 1,
+            'user_id' => $this->getIntSuccess(),
         ];
         $this->put('api/posts/' . $this->getIntMissing(), $data)
             ->assertStatus(404);
@@ -64,7 +64,7 @@ class PostTest extends TestCase
 
     public function testPostDeletedSucces()
     {
-        $this->delete('api/posts/19')
+        $this->delete('api/posts/6')
             ->assertStatus(204);
     }
 
@@ -76,7 +76,7 @@ class PostTest extends TestCase
 
     private function getIntSuccess()
     {
-        return random_int(1, 10);
+        return random_int(1, 5);
     }
 
     private function getIntMissing()
