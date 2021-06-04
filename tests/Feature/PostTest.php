@@ -82,6 +82,6 @@ class PostTest extends TestCase
     private function getIntMissing()
     {
 
-        return random_int(100,200);
+        return random_int(100, 200);
     }
 }
