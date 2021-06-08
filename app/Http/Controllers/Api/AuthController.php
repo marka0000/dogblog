@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-
+        // Вынести в отдельный Request
         $fields = $request->validate([
             'name' => 'required|string',
             'nickname' => 'required|string',
@@ -40,26 +40,23 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
-        $fields = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string'
-        ]);
-
-        $user = User::create([
-            'email' => $fields['email'],
-            'password' => bcrypt($fields['password']),
-        ]);
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response()->json($response, 201);
+//        $fields = $request->validate([
+//            'email' => 'required|string',
+//            'password' => 'required|string'
+//        ]);
+//
+//        $user = User::create([
+//            'email' => $fields['email'],
+//            'password' => bcrypt($fields['password']),
+//        ]);
+//
+//        $token = $user->createToken('myapptoken')->plainTextToken;
+//
+//        $response = [
+//            'user' => $user,
+//            'token' => $token
+//        ];
+//
+//        return response()->json($response, 201);
     }
-
-
 }
