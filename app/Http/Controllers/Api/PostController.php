@@ -38,13 +38,14 @@ class PostController extends Controller
         $author = Post::with('author')->find($id);
         $comment = Post::with('comment')->find($id);
 
+        if (is_null($author)) {
+            return response()->json(['error' => true, 'message' => 'Not found'], 404);
+        }
+
         $collection = collect($author);
         $merged     = $collection->merge($comment);
         $post[]   = $merged->all();
 
-        if (is_null($post)) {
-            return response()->json(['error' => true, 'message' => 'Not found'], 404);
-        }
         return response()->json($post, 200);
     }
 
