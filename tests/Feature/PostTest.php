@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
+    use WithoutMiddleware;
+
     public function testPostsShowSuccess()
     {
         $this->get('api/posts')
