@@ -19,34 +19,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-//Route::group(['middleware' => ['auth:sanctum']], function () {
-//    Route::get('/posts', [PostController::class, 'index']);
-//});
-
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('posts')->group(function () {
-        Route::get('/', [PostController::class, 'index']);
-        Route::get('/{id}', [PostController::class, 'show']);
+Route::prefix('posts')->group(function () {
+    Route::get('/', [PostController::class, 'index']);
+    Route::get('/{id}', [PostController::class, 'show']);
+
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [PostController::class, 'store']);
         Route::put('/{id}', [PostController::class, 'update']);
         Route::delete('/{id}', [PostController::class, 'destroy']);
     });
 });
-
-//Route::prefix('posts')->group(function () {
-//    Route::get('/', [PostController::class, 'index']);
-//    Route::get('/{id}', [PostController::class, 'show']);
-//    Route::post('/', [PostController::class, 'store']);
-//    Route::put('/{id}', [PostController::class, 'update']);
-//    Route::delete('/{id}', [PostController::class, 'destroy']);
-//});
 
 Route::prefix('comments')->group(function () {
     Route::post('/', [CommentController::class, 'store']);

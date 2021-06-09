@@ -25,10 +25,11 @@ class AuthController extends Controller
             'name' => $fields['name'],
             'nickname' => $fields['nickname'],
             'email' => $fields['email'],
-            'password' => $fields['password'],
+            'password' => bcrypt($fields['password']),
         ]);
 
-        $token = $user->createToken('dogblog')->plainTextToken;
+        $userNickname = $user->getAttribute('nickname');
+        $token = $user->createToken($userNickname)->plainTextToken;
 
         $response = [
             'user' => $user,
@@ -40,23 +41,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-//        $fields = $request->validate([
-//            'email' => 'required|string',
-//            'password' => 'required|string'
-//        ]);
-//
-//        $user = User::create([
-//            'email' => $fields['email'],
-//            'password' => bcrypt($fields['password']),
-//        ]);
-//
-//        $token = $user->createToken('myapptoken')->plainTextToken;
-//
-//        $response = [
-//            'user' => $user,
-//            'token' => $token
-//        ];
-//
-//        return response()->json($response, 201);
+
+        $fields = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
+        $user = User::where('email', $fields['email'])->first();
+
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response()->json(['error' => true, 'message' => 'Not found'], 404);
+        }
+
+        $userNickname = $user->getAttribute('nickname');
+        $token = $user->createToken($userNickname)->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response()->json($response, 201);
     }
 }
